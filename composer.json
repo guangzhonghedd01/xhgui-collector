@@ -13,7 +13,7 @@
             "Xhgui\\": "src"
         },
         "files": [
-            "src/header.php"
+            "Xhgui/src/header.php"
         ]
     },
     "require": {
