@@ -1,5 +1,5 @@
 <?php
-namespace Xhgui;
+namespace Guangzhong\Xhgui;
 
 class Util
 {

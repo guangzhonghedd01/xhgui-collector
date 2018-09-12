@@ -1,7 +1,7 @@
 <?php
 
-use Xhgui\Config;
-use Xhgui\Saver;
+use Guangzhong\Xhgui\Config;
+use Guangzhong\Xhgui\Saver;
 
 /* Things you may want to tweak in here:
  *  - xhprof_enable() uses a few constants.
@@ -75,13 +75,9 @@ if (!extension_loaded('xhprof')
 // Only load the config class so we don't pollute the host application's
 // autoloaders.
 $dir = dirname(__DIR__);
-require_once $dir . '/src/Xhgui/Config.php';
+require_once $dir . '/src/Config.php';
 $configDir = defined('XHGUI_CONFIG_DIR') ? XHGUI_CONFIG_DIR : $dir . '/config/';
-if (file_exists($configDir . 'xhgui.php')) {
-    Config::load($configDir . 'xhgui.php');
-} else {
-    Config::load($configDir . 'config.default.php');
-}
+Config::load($configDir . 'xhgui.php');
 unset($dir, $configDir);
 
 if ((!extension_loaded('mongo') && !extension_loaded('mongodb')) && Config::read('save.handler') === 'mongodb') {

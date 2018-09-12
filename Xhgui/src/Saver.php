@@ -1,10 +1,10 @@
 <?php
 
-namespace Xhgui;
+namespace Guangzhong\Xhgui;
 
-use Xhgui\Saver\File;
-use Xhgui\Saver\Mongo;
-use Xhgui\Saver\Upload;
+use Guangzhong\Xhgui\Saver\File;
+use Guangzhong\Xhgui\Saver\Mongo;
+use Guangzhong\Xhgui\Saver\Upload;
 
 /**
  * A small factory to handle creation of the profile saver instance.

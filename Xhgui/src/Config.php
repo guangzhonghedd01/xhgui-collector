@@ -1,6 +1,6 @@
 <?php
 
-namespace Xhgui;
+namespace Guangzhong\Xhgui;
 
 /**
  * Loads and reads config file.

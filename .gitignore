@@ -1,7 +1,7 @@
 /composer.phar
 /tags
 /vendor
-config/config.php
+Xhgui/config/config.php
 
 # phpstorm files
 .idea/

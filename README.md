@@ -65,7 +65,7 @@ top of your script:
 
 ```php
 <?php
-require '/path/to/xhgui/external/header.php';
+require 'xhgui.php';
 // Rest of script.
 ```
 

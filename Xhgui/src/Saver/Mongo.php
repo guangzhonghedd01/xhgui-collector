@@ -1,6 +1,6 @@
 <?php
 
-namespace Xhgui\Saver;
+namespace Guangzhong\Xhgui\Saver;
 
 class Mongo implements Interfaces
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Xhgui\Saver;
+namespace Guangzhong\Xhgui\Saver;
 
 class File implements Interfaces
 {
