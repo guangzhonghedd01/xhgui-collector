@@ -10,10 +10,10 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Xhgui": "Xhgui/src"
+            "Xhgui\\": "src"
         },
         "files": [
-            "Xhgui/src/Config.php"
+            "src/Config.php"
         ]
     },
     "require": {
