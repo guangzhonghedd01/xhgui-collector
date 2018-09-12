@@ -1,5 +1,5 @@
 {
-    "name": "guangzhongdd01/xhgui-collector",
+    "name": "guangzhonghedd01/xhgui-collector",
     "description": "Library for collecting and storing XHProf results for later use by XHGUI.",
     "authors": [
         {
@@ -8,11 +8,6 @@
         }
     ],
     "license": "MIT",
-//    "autoload": {
-//        "psr-0": {
-//            "Xhgui_": "src/"
-//        }
-//    },
     "autoload": {
         "psr-4": {
             "Xhgui": "Xhgui/src"
