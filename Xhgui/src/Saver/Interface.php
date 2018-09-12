@@ -1,6 +1,8 @@
 <?php
 
-interface Xhgui_Saver_Interface
+namespace Xhgui\Saver;
+
+interface Interfaces
 {
     public function save(array $data);
 }

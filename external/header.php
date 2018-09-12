@@ -1,4 +1,8 @@
 <?php
+
+use Xhgui\Config;
+use Xhgui\Saver;
+
 /* Things you may want to tweak in here:
  *  - xhprof_enable() uses a few constants.
  *  - The values passed to rand() determine the the odds of any particular run being profiled.
@@ -61,6 +65,7 @@ if (!extension_loaded('xhprof')
     && !extension_loaded('tideways_xhprof')
 ) {
     error_log('xhgui - either extension xhprof, uprofiler, tideways or tideways_xhprof must be loaded');
+
     return;
 }
 
@@ -72,19 +77,19 @@ if (!extension_loaded('xhprof')
 $dir = dirname(__DIR__);
 require_once $dir . '/src/Xhgui/Config.php';
 $configDir = defined('XHGUI_CONFIG_DIR') ? XHGUI_CONFIG_DIR : $dir . '/config/';
-if (file_exists($configDir . 'config.php')) {
-    Xhgui_Config::load($configDir . 'config.php');
+if (file_exists($configDir . 'xhgui.php')) {
+    Config::load($configDir . 'xhgui.php');
 } else {
-    Xhgui_Config::load($configDir . 'config.default.php');
+    Config::load($configDir . 'config.default.php');
 }
 unset($dir, $configDir);
 
-if ((!extension_loaded('mongo') && !extension_loaded('mongodb')) && Xhgui_Config::read('save.handler') === 'mongodb') {
+if ((!extension_loaded('mongo') && !extension_loaded('mongodb')) && Config::read('save.handler') === 'mongodb') {
     error_log('xhgui - extension mongo not loaded');
     return;
 }
 
-if (!Xhgui_Config::shouldRun()) {
+if (!Config::shouldRun()) {
     return;
 }
 
@@ -92,7 +97,7 @@ if (!isset($_SERVER['REQUEST_TIME_FLOAT'])) {
     $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
 }
 
-$options = Xhgui_Config::read('profiler.options');
+$options = Config::read('profiler.options');
 if (extension_loaded('uprofiler')) {
     uprofiler_enable(UPROFILER_FLAGS_CPU | UPROFILER_FLAGS_MEMORY, $options);
 } else if (extension_loaded('tideways')) {
@@ -125,13 +130,7 @@ register_shutdown_function(
         // since we're delaying that a bit by dealing with the xhprof stuff, we'll do it now to avoid making the user wait.
         ignore_user_abort(true);
         flush();
-        if (function_exists('fastcgi_finish_request')) {
-            fastcgi_finish_request();
-        }
 
-        if (!defined('XHGUI_ROOT_DIR')) {
-            require dirname(dirname(__FILE__)) . '/src/bootstrap.php';
-        }
 
         $uri = array_key_exists('REQUEST_URI', $_SERVER)
             ? $_SERVER['REQUEST_URI']
@@ -152,29 +151,36 @@ register_shutdown_function(
             $requestTimeFloat[1] = 0;
         }
 
-        if (Xhgui_Config::read('save.handler') === 'mongodb') {
-            $requestTs = new MongoDate($time);
-            $requestTsMicro = new MongoDate($requestTimeFloat[0], $requestTimeFloat[1]);
+        if (Config::read('save.handler') === 'mongodb') {
+            $requestTs = new MongoDB\BSON\UTCDateTime($time);
+            $requestTsMicro = new MongoDB\BSON\Timestamp($requestTimeFloat[0], $requestTimeFloat[1]);
         } else {
-            $requestTs = array('sec' => $time, 'usec' => 0);
-            $requestTsMicro = array('sec' => $requestTimeFloat[0], 'usec' => $requestTimeFloat[1]);
+            $requestTs = [
+                'sec'  => $time,
+                'usec' => 0,
+            ];
+            $requestTsMicro = [
+                'sec'  => $requestTimeFloat[0],
+                'usec' => $requestTimeFloat[1],
+            ];
         }
 
-        $data['meta'] = array(
-            'url' => $uri,
-            'SERVER' => $_SERVER,
-            'get' => $_GET,
-            'env' => $_ENV,
-            'simple_url' => Xhgui_Util::simpleUrl($uri),
-            'request_ts' => $requestTs,
+
+        $data['meta'] = [
+            'url'              => $uri,
+            'SERVER'           => $_SERVER,
+            'get'              => $_GET,
+            'env'              => $_ENV,
+            'simple_url'       => Xhgui_Util::simpleUrl($uri),
+            'request_ts'       => $requestTs,
             'request_ts_micro' => $requestTsMicro,
-            'request_date' => date('Y-m-d', $time),
-        );
+            'request_date'     => date('Y-m-d', $time),
+        ];
 
         try {
-            $config = Xhgui_Config::all();
-            $config += array('db.options' => array());
-            $saver = Xhgui_Saver::factory($config);
+            $config = Config::all();
+            $config += ['db.options' => []];
+            $saver = Saver::factory($config);
             $saver->save($data);
         } catch (Exception $e) {
             error_log('xhgui - ' . $e->getMessage());

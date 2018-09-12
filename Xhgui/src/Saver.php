@@ -1,16 +1,24 @@
 <?php
+
+namespace Xhgui;
+
+use Xhgui\Saver\File;
+use Xhgui\Saver\Mongo;
+use Xhgui\Saver\Upload;
+
 /**
  * A small factory to handle creation of the profile saver instance.
  *
  * This class only exists to handle cases where an incompatible version of pimple
  * exists in the host application.
  */
-class Xhgui_Saver
+class Saver
 {
     /**
      * Get a saver instance based on configuration data.
      *
      * @param array $config The configuration data.
+     *
      * @return Xhgui_Saver_File|Xhgui_Saver_Mongo|Xhgui_Saver_Upload
      */
     public static function factory($config)
@@ -18,14 +26,15 @@ class Xhgui_Saver
         switch ($config['save.handler']) {
 
             case 'file':
-                return new Xhgui_Saver_File($config['save.handler.filename']);
+                return new File($config['save.handler.filename']);
 
             case 'upload':
                 $timeout = 3;
                 if (isset($config['save.handler.upload.timeout'])) {
                     $timeout = $config['save.handler.upload.timeout'];
                 }
-                return new Xhgui_Saver_Upload(
+
+                return new Upload(
                     $config['save.handler.upload.uri'],
                     $timeout
                 );
@@ -35,7 +44,8 @@ class Xhgui_Saver
                 $mongo = new MongoClient($config['db.host'], $config['db.options']);
                 $collection = $mongo->{$config['db.db']}->results;
                 $collection->findOne();
-                return new Xhgui_Saver_Mongo($collection);
+
+                return new Mongo($collection);
         }
     }
 }

@@ -1,16 +1,20 @@
 <?php
+
+namespace Xhgui;
+
 /**
  * Loads and reads config file.
  */
-class Xhgui_Config
+class Config
 {
-    private static $_config = array();
+    private static $_config = [];
 
     /**
      * Load a config file, it will replace
      * all the currently loaded configuration.
      *
      * @param string $file
+     *
      * @return void
      */
     public static function load($file)
@@ -23,6 +27,7 @@ class Xhgui_Config
      * Read a config value.
      *
      * @param string $name The name of the config variable
+     *
      * @return The value or null.
      */
     public static function read($name)
@@ -30,6 +35,7 @@ class Xhgui_Config
         if (isset(self::$_config[$name])) {
             return self::$_config[$name];
         }
+
         return null;
     }
 
@@ -47,7 +53,8 @@ class Xhgui_Config
      * Write a config value.
      *
      * @param string $name The name of the config variable
-     * @param mixed $value The value of the config variable
+     * @param mixed  $value The value of the config variable
+     *
      * @return void
      */
     public static function write($name, $value)
@@ -62,7 +69,7 @@ class Xhgui_Config
      */
     public static function clear()
     {
-        self::$_config = array();
+        self::$_config = [];
     }
 
     /**
@@ -79,7 +86,7 @@ class Xhgui_Config
         if (!is_callable($callback)) {
             return false;
         }
+
         return (bool)$callback();
     }
-
 }

@@ -1,5 +1,5 @@
 {
-    "name": "perftools/xhgui-collector",
+    "name": "guangzhongdd01/xhgui-collector",
     "description": "Library for collecting and storing XHProf results for later use by XHGUI.",
     "authors": [
         {
@@ -8,10 +8,18 @@
         }
     ],
     "license": "MIT",
+//    "autoload": {
+//        "psr-0": {
+//            "Xhgui_": "src/"
+//        }
+//    },
     "autoload": {
-        "psr-0": {
-            "Xhgui_": "src/"
-        }
+        "psr-4": {
+            "Xhgui": "Xhgui/src"
+        },
+        "files": [
+            "Xhgui/src/Config.php"
+        ]
     },
     "require": {
         "php": ">=5.3.0"
@@ -19,7 +27,6 @@
     "suggest": {
         "ext-xhprof": "You need to install either xhprof or uprofiler to use XHGui.",
         "ext-uprofiler": "You need to install either xhprof or uprofiler to use XHGui.",
-        "ext-mongo": "Mongo is needed to store profiler results for PHP < 7.",
         "ext-mongodb": "Mongo is needed to store profiler results for PHP > 7.",
         "ext-curl": "You need to install the curl extension to upload saved files",
         "alcaeus/mongo-php-adapter": "Mongo PHP Adapter is required for PHP >7 (when using ext-mongodb)"
