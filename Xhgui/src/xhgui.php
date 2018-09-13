@@ -1,7 +1,10 @@
 <?php
 
 use Guangzhong\Xhgui\Config;
+use Guangzhong\Xhgui\Util;
 use Guangzhong\Xhgui\Saver;
+use Guangzhong\Xhgui\Saver\Mongo;
+
 
 /* Things you may want to tweak in here:
  *  - xhprof_enable() uses a few constants.
@@ -76,7 +79,13 @@ if (!extension_loaded('xhprof')
 // autoloaders.
 $dir = dirname(__DIR__);
 require_once $dir . '/src/Config.php';
+require_once $dir . '/src/Util.php';
+require_once $dir . '/src/Saver.php';
+require_once $dir . '/src/Saver/Interface.php';
+require_once $dir . '/src/Saver/Mongo.php';
+
 $configDir = defined('XHGUI_CONFIG_DIR') ? XHGUI_CONFIG_DIR : $dir . '/config/';
+
 Config::load($configDir . 'xhgui.php');
 unset($dir, $configDir);
 
@@ -92,7 +101,6 @@ if (!Config::shouldRun()) {
 if (!isset($_SERVER['REQUEST_TIME_FLOAT'])) {
     $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
 }
-
 $options = Config::read('profiler.options');
 if (extension_loaded('uprofiler')) {
     uprofiler_enable(UPROFILER_FLAGS_CPU | UPROFILER_FLAGS_MEMORY, $options);
@@ -167,7 +175,7 @@ register_shutdown_function(
             'SERVER'           => $_SERVER,
             'get'              => $_GET,
             'env'              => $_ENV,
-            'simple_url'       => Xhgui_Util::simpleUrl($uri),
+            'simple_url'       => Util::simpleUrl($uri),
             'request_ts'       => $requestTs,
             'request_ts_micro' => $requestTsMicro,
             'request_date'     => date('Y-m-d', $time),
@@ -176,9 +184,10 @@ register_shutdown_function(
         try {
             $config = Config::all();
             $config += ['db.options' => []];
+
             $saver = Saver::factory($config);
             $saver->save($data);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             error_log('xhgui - ' . $e->getMessage());
         }
     }

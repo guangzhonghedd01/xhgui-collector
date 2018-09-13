@@ -5,3 +5,4 @@ Xhgui/config/config.php
 
 # phpstorm files
 .idea/
+composer.lock

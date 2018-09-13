@@ -5,6 +5,8 @@ namespace Guangzhong\Xhgui;
 use Guangzhong\Xhgui\Saver\File;
 use Guangzhong\Xhgui\Saver\Mongo;
 use Guangzhong\Xhgui\Saver\Upload;
+use MongoDB\Client;
+use MongoDB\Collection;
 
 /**
  * A small factory to handle creation of the profile saver instance.
@@ -41,9 +43,8 @@ class Saver
 
             case 'mongodb':
             default:
-                $mongo = new MongoClient($config['db.host'], $config['db.options']);
-                $collection = $mongo->{$config['db.db']}->results;
-                $collection->findOne();
+                $mongo = new Client($config['db.host'], $config['db.options']);
+                $collection = new Collection($mongo->getManager(), $config['db.db'], 'results');
 
                 return new Mongo($collection);
         }
