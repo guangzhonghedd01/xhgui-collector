@@ -10,16 +10,14 @@ class Config
     private static $_config = [];
 
     /**
-     * Load a config file, it will replace
      * all the currently loaded configuration.
      *
-     * @param string $file
+     * @param array $config
      *
      * @return void
      */
-    public static function load($file)
+    public static function load($config)
     {
-        $config = include($file);
         self::$_config = array_merge(self::$_config, $config);
     }
 

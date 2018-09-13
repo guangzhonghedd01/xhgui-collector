@@ -2,6 +2,8 @@
 
 namespace Guangzhong\Xhgui\Saver;
 
+use MongoDB\Collection;
+
 class Mongo implements Interfaces
 {
     /**
@@ -13,7 +15,7 @@ class Mongo implements Interfaces
      */
     private static $lastProfilingId;
 
-    public function __construct(MongoCollection $collection)
+    public function __construct(Collection $collection)
     {
         $this->_collection = $collection;
     }
@@ -22,7 +24,7 @@ class Mongo implements Interfaces
     {
         $data['_id'] = self::getLastProfilingId();
 
-        return $this->_collection->insert($data, ['w' => 0]);
+        return $this->_collection->insertOne($data);
     }
 
     /**
@@ -32,7 +34,7 @@ class Mongo implements Interfaces
     public static function getLastProfilingId()
     {
         if (!self::$lastProfilingId) {
-            self::$lastProfilingId = new MongoId();
+            self::$lastProfilingId = 'xhprof_' . md5(uniqid() . microtime(true));
         }
 
         return self::$lastProfilingId;

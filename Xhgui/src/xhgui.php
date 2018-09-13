@@ -5,7 +5,6 @@ use Guangzhong\Xhgui\Util;
 use Guangzhong\Xhgui\Saver;
 use Guangzhong\Xhgui\Saver\Mongo;
 
-
 /* Things you may want to tweak in here:
  *  - xhprof_enable() uses a few constants.
  *  - The values passed to rand() determine the the odds of any particular run being profiled.
@@ -86,11 +85,12 @@ require_once $dir . '/src/Saver/Mongo.php';
 
 $configDir = defined('XHGUI_CONFIG_DIR') ? XHGUI_CONFIG_DIR : $dir . '/config/';
 
-Config::load($configDir . 'xhgui.php');
+Config::load(config('xhgui'));
 unset($dir, $configDir);
 
 if ((!extension_loaded('mongo') && !extension_loaded('mongodb')) && Config::read('save.handler') === 'mongodb') {
     error_log('xhgui - extension mongo not loaded');
+
     return;
 }
 
@@ -168,7 +168,6 @@ register_shutdown_function(
                 'usec' => $requestTimeFloat[1],
             ];
         }
-
 
         $data['meta'] = [
             'url'              => $uri,

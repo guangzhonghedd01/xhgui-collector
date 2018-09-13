@@ -2,14 +2,9 @@
 /**
  * Default configuration for Xhgui
  */
-
-$mongoUri = getenv('XHGUI_MONGO_URI') ?: '127.0.0.1:27017';
-$mongoUri = str_replace('mongodb://', '', $mongoUri);
-$mongoDb = getenv('XHGUI_MONGO_DB') ?: 'xhprof';
-
-return array(
-    'debug' => false,
-    'mode' => 'development',
+return [
+    'debug'           => env('APP_DEBUG', false),
+    'mode'            => env('APP_NAME', 'xhprof'),
 
     // Can be mongodb, file or upload.
 
@@ -30,28 +25,36 @@ return array(
     //'save.handler.upload.timeout' => 3,
 
     // For MongoDB
-    'save.handler' => 'mongodb',
-    'db.host' => sprintf('mongodb://%s', $mongoUri),
-    'db.db' => $mongoDb,
+    'save.handler'    => 'mongodb',
+    'db.host'         => sprintf('mongodb://%s', env('XHGUI_MONGO_URI', '127.0.0.1:27017')),
+    'db.db'           => env('XHGUI_MONGO_DB', 'xhprof'),
 
     // Allows you to pass additional options like replicaSet to MongoClient.
     // 'username', 'password' and 'db' (where the user is added)
-    'db.options' => array(),
-    'templates.path' => dirname(__DIR__) . '/src/templates',
-    'date.format' => 'M jS H:i:s',
-    'detail.count' => 6,
-    'page.limit' => 25,
+    'db.options'      => [],
+    'templates.path'  => dirname(__DIR__) . '/src/templates',
+    'date.format'     => 'M jS H:i:s',
+    'detail.count'    => 6,
+    'page.limit'      => 25,
 
     // Profile x in 100 requests. (E.g. set XHGUI_PROFLING_RATIO=50 to profile 50% of requests)
     // You can return true to profile every request.
-    'profiler.enable' => function() {
-        $ratio = getenv('XHGUI_PROFILING_RATIO') ?: 100;
-        return (getenv('XHGUI_PROFILING') !== false) && (mt_rand(1, 100) <= $ratio);
+    'profiler.enable' => function () {
+        if (env('XHGUI_PROFILING', 'enabled') == '') {
+            return false;
+        }
+
+        $ratio = env('XHGUI_PROFILING_RATIO', 100);
+
+        return mt_rand(1, 100) <= $ratio;
     },
 
-    'profiler.simple_url' => function($url) {
+    'profiler.simple_url' => function ($url) {
         return preg_replace('/\=\d+/', '', $url);
     },
 
-    'profiler.options' => array(),
-);
+    'profiler.options' => [],
+];
+
+
+
