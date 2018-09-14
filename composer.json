@@ -10,9 +10,9 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Guangzhong\\Xhgui\\": "src/"
+            "Guangzhong\\Xhgui\\": "Xhgui/src/"
         },
-        "files": ["src/functions.php"]
+        "files": ["Xhgui/src/functions.php"]
     },
     "require": {
         "php": ">=7.0.0",
