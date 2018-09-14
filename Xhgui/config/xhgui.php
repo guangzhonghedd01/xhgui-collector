@@ -2,29 +2,12 @@
 /**
  * Default configuration for Xhgui
  */
+
 return [
     'debug'           => env('APP_DEBUG', false),
-    'mode'            => env('APP_NAME', 'xhprof'),
-
-    // Can be mongodb, file or upload.
-
-    // For file
-    //
-    //'save.handler' => 'file',
-    //'save.handler.filename' => dirname(__DIR__) . '/cache/' . 'xhgui.data.' . microtime(true) . '_' . substr(md5($url), 0, 6),
-
-    // For upload
-    //
-    // Saving profile data by upload is only recommended with HTTPS
-    // endpoints that have IP whitelists applied.
-    //
-    // The timeout option is in seconds and defaults to 3 if unspecified.
-    //
-    //'save.handler' => 'upload',
-    //'save.handler.upload.uri' => 'https://example.com/run/import',
-    //'save.handler.upload.timeout' => 3,
-
-    // For MongoDB
+    'mode'            => env('APP_NAME', 'eatojoy'),
+    'filter_var'      => empty(env('XHGUI_FILTER_VAR', '')) ?
+        [] : explode(',', env('XHGUI_FILTER_VAR')),
     'save.handler'    => 'mongodb',
     'db.host'         => sprintf('mongodb://%s', env('XHGUI_MONGO_URI', '127.0.0.1:27017')),
     'db.db'           => env('XHGUI_MONGO_DB', 'xhprof'),
@@ -55,6 +38,3 @@ return [
 
     'profiler.options' => [],
 ];
-
-
-

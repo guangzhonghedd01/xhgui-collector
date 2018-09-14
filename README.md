@@ -93,6 +93,7 @@ require_once PATH_TO_YOUR_VENDOR . '/perftools/xhgui-collector/external/header.p
 | `XHGUI_MONGO_DB` | the database name for the profiling data | `XHGUI_MONGO_DB=xhprof` | xhprof |
 | `XHGUI_PROFILING_RATIO` | the ratio of profiled requests | `XHGUI_PROFILING_RATIO=50` which profiles 50% of all requests | `XHGUI_PROFILING_RATIO=100` |
 | `XHGUI_PROFILING` | if this env var is set with any value the profiling is enabled | `XHGUI_PROFILING=enabled` | it is not set per default, so no profiling will be triggered |
+| `XHGUI_FILTER_VAR` | 需要过滤ENV的敏感数据信息 | `XHGUI_PROFILING=xx_PASSPORT` |  |
 
 
 ## System Requirements

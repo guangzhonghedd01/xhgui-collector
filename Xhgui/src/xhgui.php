@@ -83,10 +83,8 @@ require_once $dir . '/src/Saver.php';
 require_once $dir . '/src/Saver/Interface.php';
 require_once $dir . '/src/Saver/Mongo.php';
 
-$configDir = defined('XHGUI_CONFIG_DIR') ? XHGUI_CONFIG_DIR : $dir . '/config/';
-
 Config::load(config('xhgui'));
-unset($dir, $configDir);
+unset($dir);
 
 if ((!extension_loaded('mongo') && !extension_loaded('mongodb')) && Config::read('save.handler') === 'mongodb') {
     error_log('xhgui - extension mongo not loaded');
@@ -120,10 +118,25 @@ register_shutdown_function(
     function () {
         if (extension_loaded('uprofiler')) {
             $data['profile'] = uprofiler_disable();
+        } else if (extension_loaded('tideways_xhprof')) {
+            $data['profile'] = tideways_xhprof_disable();
         } else if (extension_loaded('tideways')) {
             $data['profile'] = tideways_disable();
-        } elseif (extension_loaded('tideways_xhprof')) {
-            $data['profile'] = tideways_xhprof_disable();
+            $sqlData = tideways_get_spans();
+            $data['sql'] = [];
+            if (isset($sqlData[1])) {
+                foreach ($sqlData as $val) {
+                    if (isset($val['n']) && $val['n'] === 'sql' && isset($val['a']) && isset($val['a']['sql'])) {
+                        $_time_tmp = (isset($val['b'][0]) && isset($val['e'][0])) ? ($val['e'][0] - $val['b'][0]) : 0;
+                        if (!empty($val['a']['sql'])) {
+                            $data['sql'][] = [
+                                'time' => $_time_tmp,
+                                'sql'  => $val['a']['sql'],
+                            ];
+                        }
+                    }
+                }
+            }
         } else {
             $data['profile'] = xhprof_disable();
         }
@@ -134,7 +147,6 @@ register_shutdown_function(
         // since we're delaying that a bit by dealing with the xhprof stuff, we'll do it now to avoid making the user wait.
         ignore_user_abort(true);
         flush();
-
 
         $uri = array_key_exists('REQUEST_URI', $_SERVER)
             ? $_SERVER['REQUEST_URI']
@@ -155,25 +167,22 @@ register_shutdown_function(
             $requestTimeFloat[1] = 0;
         }
 
-        if (Config::read('save.handler') === 'mongodb') {
-            $requestTs = new MongoDB\BSON\UTCDateTime($time);
-            $requestTsMicro = new MongoDB\BSON\Timestamp($requestTimeFloat[0], $requestTimeFloat[1]);
-        } else {
-            $requestTs = [
-                'sec'  => $time,
-                'usec' => 0,
-            ];
-            $requestTsMicro = [
-                'sec'  => $requestTimeFloat[0],
-                'usec' => $requestTimeFloat[1],
-            ];
+        $requestTs = ['sec' => $time, 'usec' => 0];
+        $requestTsMicro = ['sec' => $requestTimeFloat[0], 'usec' => $requestTimeFloat[1]];
+
+        //过滤敏感数据信息，比如密码之类的
+        $filterVar = Config::read('filter_var');
+        foreach ($filterVar as $v) {
+            if (isset($_SERVER[$v])) {
+                unset($_SERVER[$v]);
+            }
         }
 
         $data['meta'] = [
             'url'              => $uri,
             'SERVER'           => $_SERVER,
             'get'              => $_GET,
-            'env'              => $_ENV,
+            'env'              => '', //去掉env信息
             'simple_url'       => Util::simpleUrl($uri),
             'request_ts'       => $requestTs,
             'request_ts_micro' => $requestTsMicro,
