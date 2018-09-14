@@ -12,7 +12,10 @@ class Upload implements Interfaces
         $this->timeout = $timeout;
     }
 
-    public function save($data)
+    /**
+     * @param array $data
+     */
+    public function save(array $data)
     {
         $json = json_encode($data);
 
