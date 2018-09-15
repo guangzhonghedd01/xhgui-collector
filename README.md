@@ -47,8 +47,8 @@ class Xhprof extends Middleware
 * mongodo >= 1.5.0
 * tideways 4.1.6 (官方最新版本为5.0，暂不支持)
 
-![tideways](https://github.com/guangzhonghedd01/xhgui-collector/Xhgui/images/extension_tideways.jpg)
+![tideways](https://github.com/guangzhonghedd01/xhgui-collector/blob/master/Xhgui/images/extension_tideways.jpg)
 
-![tideways](https://github.com/guangzhonghedd01/xhgui-collector/Xhgui/images/extension_mongodb.jpg)
+![tideways](https://github.com/guangzhonghedd01/xhgui-collector/blob/master/Xhgui/images/extension_mongodb.jpg)
 
 
