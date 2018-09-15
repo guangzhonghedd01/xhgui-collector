@@ -38,8 +38,7 @@ XHGUI_MONGO_DB=xhprof
 XHGUI_PROFILING_RATIO=100
 XHGUI_PROFILING=enabled
 XHGUI_FILTER_VAR=XHGUI_FILTER_VAR
-
-* 配置信息说明
+```
 
 | env | description | example | default |
 | ---- | ----------- | ------- | ------- |
@@ -49,7 +48,7 @@ XHGUI_FILTER_VAR=XHGUI_FILTER_VAR
 | XHGUI_PROFILING | 采集开关 | `XHGUI_PROFILING=enabled` | 如果不填写值就是关闭状态 |
 | XHGUI_FILTER_VAR | 需要过滤ENV的敏感数据信息 | `XHGUI_PROFILING=xx_password` | 没有默认值 |
 
-```
+
 
 ## 扩展支持
 * php >= 7.0.0
