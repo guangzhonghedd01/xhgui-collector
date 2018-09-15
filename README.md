@@ -33,13 +33,22 @@ class Xhprof extends Middleware
 ``` 
 * env 配置信息
 ```
+XHGUI_MONGO_URI=127.0.0.1:27017
+XHGUI_MONGO_DB=xhprof
+XHGUI_PROFILING_RATIO=100
+XHGUI_PROFILING=enabled
+XHGUI_FILTER_VAR=XHGUI_FILTER_VAR
+
+* 配置信息说明
+
 | env | description | example | default |
 | ---- | ----------- | ------- | ------- |
-| `XHGUI_MONGO_URI` | mongodb 地址 | `XHGUI_MONGO_URI=mongo:27017` | 127.0.0.1:27017 |
-| `XHGUI_MONGO_DB` | 库名 | `XHGUI_MONGO_DB=xhprof` | xhprof |
-| `XHGUI_PROFILING_RATIO` | 采样比率 | `XHGUI_PROFILING_RATIO=50` 对50%请求进行采集 | `XHGUI_PROFILING_RATIO=100` |
-| `XHGUI_PROFILING` | 采集开关 | `XHGUI_PROFILING=enabled` | 如果不填写值就是关闭状态 |
-| `XHGUI_FILTER_VAR` | 需要过滤ENV的敏感数据信息 | `XHGUI_PROFILING=xx_password` | 没有默认值 |
+| XHGUI_MONGO_URI | mongodb 地址 | `XHGUI_MONGO_URI=mongo:27017` | 127.0.0.1:27017 |
+| XHGUI_MONGO_DB | 库名 | `XHGUI_MONGO_DB=xhprof` | xhprof |
+| XHGUI_PROFILING_RATIO | 采样比率 | `XHGUI_PROFILING_RATIO=50` 对50%请求进行采集 | `XHGUI_PROFILING_RATIO=100` |
+| XHGUI_PROFILING | 采集开关 | `XHGUI_PROFILING=enabled` | 如果不填写值就是关闭状态 |
+| XHGUI_FILTER_VAR | 需要过滤ENV的敏感数据信息 | `XHGUI_PROFILING=xx_password` | 没有默认值 |
+
 ```
 
 ## 扩展支持
