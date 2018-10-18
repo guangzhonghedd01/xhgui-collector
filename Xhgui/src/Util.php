@@ -14,10 +14,6 @@ class Util
      */
     public static function simpleUrl($url)
     {
-        $callable = Config::read('profiler.simple_url');
-        if (is_callable($callable)) {
-            return call_user_func($callable, $url);
-        }
         return preg_replace('/\=\d+/', '', $url);
     }
 

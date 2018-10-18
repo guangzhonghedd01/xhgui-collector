@@ -80,11 +80,6 @@ class Config
      */
     public static function shouldRun()
     {
-        $callback = self::read('profiler.enable');
-        if (!is_callable($callback)) {
-            return false;
-        }
-
-        return (bool)$callback();
+        return mt_rand(0, 100) < (int)self::read('profiler.enable');
     }
 }
