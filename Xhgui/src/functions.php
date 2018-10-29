@@ -14,3 +14,9 @@ if (!\function_exists('xhgui_laravel')) {
         Import::laravel();
     }
 }
+if (!\function_exists('xhgui_thinkphp')) {
+    function xhgui_thinkphp()
+    {
+        Import::laravel();
+    }
+}

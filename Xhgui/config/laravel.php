@@ -5,7 +5,7 @@
 
 return [
     'debug'           => env('APP_DEBUG', false),
-    'mode'            => env('APP_NAME', 'eatojoy'),
+    'mode'            => env('APP_NAME', 'test'),
     'filter_var'      => empty(env('XHGUI_FILTER_VAR', '')) ?
         [] : explode(',', env('XHGUI_FILTER_VAR')),
     'save.handler'    => 'mongodb',

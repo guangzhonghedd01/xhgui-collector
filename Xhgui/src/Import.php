@@ -136,6 +136,7 @@ class Import
                     'request_ts_micro' => $requestTsMicro,
                     'request_date'     => date('Y-m-d', $time),
                 ];
+                $data['project'] = Config::read('mode');
 
                 try {
                     $config = Config::all();
@@ -143,6 +144,7 @@ class Import
 
                     $saver = Saver::factory($config);
                     $saver->save($data);
+
                 } catch (\Exception $e) {
                     error_log('xhgui - ' . $e->getMessage());
                 }
