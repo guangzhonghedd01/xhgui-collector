@@ -1,4 +1,4 @@
-# XHGUI Collector - larval5/thinkphp5
+# XHGUI Collector - laravel5/thinkphp5
 fork from [xhgui-collector](https://github.com/perftools/xhgui-collector)
 
 改造后支持 psr-4，框架可以一键对日志进行采集。
