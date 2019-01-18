@@ -145,6 +145,14 @@ class Import
                     'request_ts_micro' => $requestTsMicro,
                     'request_date'     => date('Y-m-d', $time),
                 ];
+                if (isset($requestTsMicro['usec'])) {
+                    //执行时间转换成秒
+                    $sec = $requestTsMicro['usec'] / 1000000;
+                    $set_time = Config::read('profiler.second');
+                    if ($sec < $set_time) {
+                        return;
+                    }
+                }
                 $data['project'] = Config::read('mode');
 
                 try {
