@@ -23,5 +23,5 @@ return [
     'page.limit'      => 25,
     'profiler.enable' => (int)\think\Env::get('XHGUI_PROFILING_RATIO', 0),
     'profiler.options' => [],
-    'profiler.second' => (int)Env('XHGUI_EXECUTE_SECOND', 0),
+    'profiler.second' => \think\Env::get('XHGUI_EXECUTE_SECOND', 0),
 ];

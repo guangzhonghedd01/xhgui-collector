@@ -20,5 +20,5 @@ return [
     'page.limit'      => 25,
     'profiler.enable' => (int)env('XHGUI_PROFILING_RATIO', 0),
     'profiler.options' => [],
-    'profiler.second' => (int)env('XHGUI_EXECUTE_SECOND', 0),
+    'profiler.second' => env('XHGUI_EXECUTE_SECOND', 0),
 ];
